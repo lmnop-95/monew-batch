@@ -6,18 +6,18 @@ spring:
 
   batch:
     job:
-      enabled: false
+      enabled: true
     jdbc:
       initialize-schema: never
 
   datasource-data:
     driver-class-name: org.postgresql.Driver
-    jdbc-url: jdbc:postgresql://monewdb.cxa66kqswhdd.ap-northeast-2.rds.amazonaws.com:5432/monewdb
-    username: postgres
-    password: asdf1234!
+    jdbc-url: jdbc:postgresql://${DB_PROD_HOST}:${DB_PROD_PORT}/${DB_PROD_NAME}
+    username: ${DB_PROD_USER}
+    password: ${DB_PROD_PASSWORD}
 
   datasource-meta:
     driver-class-name: org.postgresql.Driver
-    jdbc-url: jdbc:postgresql://monewdb.cxa66kqswhdd.ap-northeast-2.rds.amazonaws.com:5432/monew_batch_metadata
-    username: postgres
-    password: asdf1234!
+    jdbc-url: jdbc:postgresql://${DB_PROD_HOST}:${DB_PROD_PORT}/${DB_BATCH_META_NAME:monew_batch_metadata}
+    username: ${DB_PROD_USER}
+    password: ${DB_PROD_PASSWORD}

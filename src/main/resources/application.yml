@@ -5,8 +5,6 @@ spring:
   application:
     name: monew_batch
     version: 1.0.0
-  profiles:
-    active: prod
   batch:
     job:
       enabled: true
@@ -14,8 +12,8 @@ spring:
 article:
   naver:
     api:
-      client-id: 1xTzfISLbOhjlxnp0hHa
-      client-secret: KD9xkJpJbt
+      client-id: ${NAVER_API_CLIENT_ID}
+      client-secret: ${NAVER_API_CLIENT_SECRET}
       base-url: https://openapi.naver.com/v1/search/news.json
   hankyung:
     api:

@@ -12,7 +12,7 @@ import com.monew.monew_batch.entity.Article;
 import com.monew.monew_batch.entity.ArticleSource;
 
 @SpringBootTest
-@Transactional
+@Transactional("dataTransactionManager")
 public class ArticleRepositoryTest {
 
 	@Autowired

@@ -4,6 +4,7 @@ import java.util.HashMap;
 
 import javax.sql.DataSource;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.Bean;
@@ -22,6 +23,9 @@ import org.springframework.transaction.PlatformTransactionManager;
 )
 public class DataDBConfig {
 
+	@Value("${spring.jpa.hibernate.ddl-auto:validate}")
+	private String ddlAuto;
+
 	@Bean
 	@ConfigurationProperties(prefix = "spring.datasource-data")
 	public DataSource dataDBSource() {
@@ -37,11 +41,10 @@ public class DataDBConfig {
 		em.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
 
 		HashMap<String, Object> properties = new HashMap<>();
-		properties.put("hibernate.hbm2ddl.auto", "validate");
+		properties.put("hibernate.hbm2ddl.auto", ddlAuto);
 		properties.put("hibernate.show_sql", "false");
 		properties.put("hibernate.physical_naming_strategy",
 			"org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy");
-		properties.put("hibernate.dialect", "org.hibernate.dialect.PostgreSQLDialect");
 
 		em.setJpaPropertyMap(properties);
 		return em;

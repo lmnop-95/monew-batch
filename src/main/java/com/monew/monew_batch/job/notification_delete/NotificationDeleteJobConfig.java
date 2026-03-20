@@ -37,7 +37,7 @@ public class NotificationDeleteJobConfig {
 			.tasklet((contribution, chunkContext) -> {
 				Instant threshold = Instant.now().minus(7, ChronoUnit.DAYS);
 				int deletedCount = notificationsRepository.deleteAllOlderThan(threshold);
-				log.info("[알림삭제] 7일 이상 지난 알림 {}개 삭제 완료", deletedCount);
+				log.info("[알림삭제] 확인 후 7일 이상 경과된 알림 {}개 삭제 완료", deletedCount);
 
 				chunkContext.getStepContext()
 					.getStepExecution()

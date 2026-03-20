@@ -29,7 +29,7 @@ aws:
   accessKeyId: ${AWS_ACCESS_KEY_ID}
   secretKey: ${AWS_SECRET_ACCESS_KEY}
   region: ap-northeast-2
-  bucket: monew-prod-bucket
+  bucket: ${AWS_S3_BUCKET:monew-prod-bucket-155370302844-ap-northeast-2-an}
 
 storage:
   type: s3

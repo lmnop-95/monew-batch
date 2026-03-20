@@ -1,0 +1,72 @@
+package com.monew.monew_batch.storage;
+
+import static com.monew.monew_batch.util.DataTimeParser.*;
+
+import java.io.InputStream;
+import java.time.Instant;
+import java.util.UUID;
+
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.stereotype.Component;
+
+import com.monew.monew_batch.config.AwsConfig;
+
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import software.amazon.awssdk.core.sync.RequestBody;
+import software.amazon.awssdk.services.s3.S3Client;
+import software.amazon.awssdk.services.s3.model.HeadObjectRequest;
+
+@Slf4j
+@Component
+@RequiredArgsConstructor
+@ConditionalOnProperty(name = "storage.type", havingValue = "s3")
+public class S3BinaryStorage implements BinaryStorage {
+
+	private final AwsConfig config;
+	private final S3Client s3;
+	private static final String PATH = "article/";
+
+	@Override
+	public UUID put(UUID id, Instant date, String interest, byte[] data) {
+		String formattedDate = getDateFromInstant(date);
+		String key = PATH + interest + "/" + formattedDate + "/" + id;
+
+		s3.putObject(b -> b.bucket(config.getBucket())
+			.key(key), RequestBody.fromBytes(data));
+
+		return id;
+	}
+
+	@Override
+	public InputStream get(UUID id, String interest, Instant date) {
+		String formattedDate = getDateFromInstant(date);
+		String key = PATH + interest + "/" + formattedDate + "/" + id;
+
+		return s3.getObject(b -> b.bucket(config.getBucket())
+			.key(key));
+	}
+
+	/**
+	 * 단일 건으로 조회하는건 성능상에 문제가 있음
+	 * 벌크식으로 검사하는 방식이 있지 않을까?
+	 */
+	@Override
+	public Boolean exists(UUID id, String interest, Instant date) {
+		String formattedDate = getDateFromInstant(date);
+		String key = PATH + interest + "/" + formattedDate + "/" + id;
+
+		try {
+			HeadObjectRequest headObjectRequest = HeadObjectRequest.builder()
+				.bucket(config.getBucket())
+				.key(key)
+				.build();
+
+			s3.headObject(headObjectRequest);
+			return true;
+		} catch (Exception e) {
+			return false;
+		}
+
+	}
+}

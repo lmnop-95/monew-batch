@@ -1,0 +1,23 @@
+spring:
+  boot:
+    admin:
+      client:
+        enabled: false
+
+  batch:
+    job:
+      enabled: false
+    jdbc:
+      initialize-schema: never
+
+  datasource-data:
+    driver-class-name: org.postgresql.Driver
+    jdbc-url: jdbc:postgresql://monewdb.cxa66kqswhdd.ap-northeast-2.rds.amazonaws.com:5432/monewdb
+    username: postgres
+    password: asdf1234!
+
+  datasource-meta:
+    driver-class-name: org.postgresql.Driver
+    jdbc-url: jdbc:postgresql://monewdb.cxa66kqswhdd.ap-northeast-2.rds.amazonaws.com:5432/monew_batch_metadata
+    username: postgres
+    password: asdf1234!

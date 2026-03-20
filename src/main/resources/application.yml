@@ -1,0 +1,58 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: monew_batch
+    version: 1.0.0
+  profiles:
+    active: prod
+  batch:
+    job:
+      enabled: true
+
+article:
+  naver:
+    api:
+      client-id: 1xTzfISLbOhjlxnp0hHa
+      client-secret: KD9xkJpJbt
+      base-url: https://openapi.naver.com/v1/search/news.json
+  hankyung:
+    api:
+      base-url: https://www.hankyung.com/feed
+  chosun:
+    api:
+      base-url: https://www.chosun.com/arc/outboundfeeds/rss/category
+  yonhap:
+    api:
+      base-url: https://www.yonhapnewstv.co.kr/category/news
+
+aws:
+  accessKeyId: ${AWS_ACCESS_KEY_ID}
+  secretKey: ${AWS_SECRET_ACCESS_KEY}
+  region: ap-northeast-2
+  bucket: monew-prod-bucket
+
+storage:
+  type: s3
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+      base-path: /actuator
+  endpoint:
+    health:
+      show-details: always
+    batch:
+      enabled: true
+  health:
+    defaults:
+      enabled: true
+  metrics:
+    export:
+      simple:
+        step: 10s
+    tags:
+      application: monew-batch
